@@ -624,6 +624,17 @@ function burst(cv: Canvas, cx: number, cy: number, r: number, c: RGB): void {
   }
   cv.circle(cx, cy, Math.max(2, Math.round(r / 4)), c);
 }
+// filled 5-pointed star (one point up) — burst() is a 12-ray sparkle, wrong for a flag star
+function star5(cv: Canvas, cx: number, cy: number, r: number, c: RGB): void {
+  const pts: [number, number][] = [];
+  const inner = r * 0.4;
+  for (let k = 0; k < 10; k++) {
+    const a = -Math.PI / 2 + (k / 10) * Math.PI * 2;
+    const rr = k % 2 === 0 ? r : inner;
+    pts.push([Math.round(cx + Math.cos(a) * rr), Math.round(cy + Math.sin(a) * rr)]);
+  }
+  cv.poly(pts, c);
+}
 function dottedArc(cv: Canvas, x0: number, y0: number, x1: number, y1: number, peak: number, c: RGB): void {
   for (let t = 0; t <= 1.0001; t += 0.06) {
     const x = x0 + (x1 - x0) * t;
@@ -785,13 +796,13 @@ function midDrone(cv: Canvas, x: number, y: number, w: number, h: number): void 
 }
 function midUranium(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.rect(x, y, w, h, [24, 32, 54]);
+  // atom shrunk 2x so the whole orbit fits inside the 44px-tall box (was r=34: poked 10px above and 14px below the box)
   const cx = x + 96, cy = y + 24;
-  cv.ellipse(cx, cy, 34, 12, [120, 170, 220]);
-  cv.ellipse(cx, cy, 12, 34, [120, 170, 220]);
-  cv.circle(cx, cy, 7, GOLD);
-  cv.ring(cx, cy, 34, [200, 210, 230], 1);
-  cv.text(sansB, 13, x + 8, y + 20, "U", WHITE);
-  cv.text(sans, 9, x + 8, y + 32, "STAYS", GOLD);
+  cv.ellipse(cx, cy, 17, 6, [120, 170, 220]);
+  cv.ellipse(cx, cy, 6, 17, [120, 170, 220]);
+  cv.circle(cx, cy, 4, GOLD);
+  cv.ring(cx, cy, 17, [200, 210, 230], 1);
+  cv.text(sansB, 10, x + 8, y + 24, "URANIUM", WHITE);
   cv.text(sans, 8, x + 150, y + 42, "TEHRAN", WHITE);
 }
 function midAiTax(cv: Canvas, x: number, y: number, w: number, h: number): void {
@@ -810,7 +821,7 @@ function midFlags(cv: Canvas, x: number, y: number, w: number, h: number): void 
   cv.rect(x, y, w, h, CREAM);
   // China flag (shrunk so the label below sits on plain cream, not on the flag)
   cv.rect(x + 14, y + 8, 62, 22, RED);
-  cv.circle(x + 26, y + 17, 5, GOLD);
+  star5(cv, x + 26, y + 17, 6.5, GOLD);
   for (let i = 0; i < 4; i++) cv.circle(x + 44 + (i % 2) * 12, y + 12 + Math.floor(i / 2) * 9, 2, GOLD);
   // Japan flag
   cv.rect(x + 110, y + 8, 62, 22, WHITE);
