@@ -766,7 +766,8 @@ function midQuake(cv: Canvas, x: number, y: number, w: number, h: number): void 
   cv.line(x + 56, y + 8, x + 70, y + 20, RED, 2);
   cv.line(x + 70, y + 20, x + 84, y + 12, RED, 2);
   cv.text(sansB, 17, x + 96, y + 20, "6.7", RED);
-  cv.text(sans, 8, x + 96, y + 30, "00:09 UTC", INK);
+  // bottom-right ground strip: the top-right corner is the house roof, not empty
+  cv.text(sans, 8, x + w - 6, y + h - 4, "00:09 UTC", INK, "r");
 }
 function midDrone(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.rect(x, y, w, h, SKY);
@@ -807,14 +808,14 @@ function midAiTax(cv: Canvas, x: number, y: number, w: number, h: number): void 
 }
 function midFlags(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.rect(x, y, w, h, CREAM);
-  // China flag
-  cv.rect(x + 14, y + 10, 62, 30, RED);
-  cv.circle(x + 26, y + 20, 5, GOLD);
-  for (let i = 0; i < 4; i++) cv.circle(x + 44 + (i % 2) * 12, y + 14 + Math.floor(i / 2) * 10, 2, GOLD);
+  // China flag (shrunk so the label below sits on plain cream, not on the flag)
+  cv.rect(x + 14, y + 8, 62, 22, RED);
+  cv.circle(x + 26, y + 17, 5, GOLD);
+  for (let i = 0; i < 4; i++) cv.circle(x + 44 + (i % 2) * 12, y + 12 + Math.floor(i / 2) * 9, 2, GOLD);
   // Japan flag
-  cv.rect(x + 110, y + 10, 62, 30, WHITE);
-  cv.strokeRect(x + 110, y + 10, 62, 30, GREY, 1);
-  cv.circle(x + 141, y + 25, 9, RED);
+  cv.rect(x + 110, y + 8, 62, 22, WHITE);
+  cv.strokeRect(x + 110, y + 8, 62, 22, GREY, 1);
+  cv.circle(x + 141, y + 19, 9, RED);
   cv.text(sansB, 10, x + 14, y + 42, "BEIJING  ·  TOKYO", INK);
 }
 function midPlane(cv: Canvas, x: number, y: number, w: number, h: number): void {
@@ -833,24 +834,26 @@ function midPlane(cv: Canvas, x: number, y: number, w: number, h: number): void 
 }
 function midAiTalks(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.rect(x, y, w, h, [226, 240, 226]);
-  cv.ellipse(x + 52, y + 18, 34, 14, [40, 120, 80]);
-  cv.poly([[x + 34, y + 28], [x + 40, y + 40], [x + 46, y + 28]], [40, 120, 80]);
-  cv.text(sansB, 10, x + 30, y + 22, "AI ?", WHITE);
-  cv.ellipse(x + 140, y + 18, 34, 14, GOLD);
-  cv.poly([[x + 158, y + 28], [x + 152, y + 40], [x + 146, y + 28]], GOLD);
-  cv.text(sansB, 10, x + 122, y + 22, "LET'S", NAVY);
+  cv.ellipse(x + 52, y + 15, 34, 14, [40, 120, 80]);
+  cv.poly([[x + 34, y + 25], [x + 40, y + 31], [x + 46, y + 25]], [40, 120, 80]);
+  cv.text(sansB, 10, x + 30, y + 19, "AI ?", WHITE);
+  cv.ellipse(x + 140, y + 15, 34, 14, GOLD);
+  cv.poly([[x + 158, y + 25], [x + 152, y + 31], [x + 146, y + 25]], GOLD);
+  cv.text(sansB, 10, x + 122, y + 19, "LET'S", NAVY);
   cv.text(sans, 9, x + 60, y + 42, "CANBERRA · 11 DAYS", INK);
 }
 function midBitcoin(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.rect(x, y, w, h, [22, 26, 38]);
   cv.circle(x + 150, y + 24, 16, [240, 140, 40]);
   cv.text(sansB, 16, x + 143, y + 30, "B", WHITE);
-  cv.line(x + 10, y + 10, x + 40, y + 18, RED, 2);
-  cv.line(x + 40, y + 18, x + 62, y + 14, RED, 2);
-  cv.line(x + 62, y + 14, x + 92, y + 34, RED, 2);
-  cv.line(x + 92, y + 34, x + 118, y + 30, RED, 2);
-  cv.text(sansB, 13, x + 10, y + 42, "$58,983", WHITE);
-  cv.text(sans, 8, x + 96, y + 42, "-3.9%", RED);
+  cv.line(x + 10, y + 8, x + 40, y + 14, RED, 2);
+  cv.line(x + 40, y + 14, x + 62, y + 11, RED, 2);
+  cv.line(x + 62, y + 11, x + 92, y + 24, RED, 2);
+  cv.line(x + 92, y + 24, x + 118, y + 20, RED, 2);
+  // solid chip for the numbers, clear of the chart lines
+  cv.rect(x + 6, y + 30, 122, 13, [48, 54, 72]);
+  cv.text(sansB, 13, x + 10, y + 41, "$58,983", WHITE);
+  cv.text(sans, 8, x + 96, y + 41, "-3.9%", [255, 150, 140]);
 }
 function midF1(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.rect(x, y, w, h, [40, 44, 52]);
@@ -865,6 +868,8 @@ function midF1(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.circle(x + 118, y + 24, 7, INK);
   cv.circle(x + 118, y + 24, 3, GREY);
   cv.text(sansB, 15, x + 8, y + 16, "P1", WHITE);
+  // solid chip for the time, clear of the road and its dashes
+  cv.rect(x + 138, y + 32, 54, 12, [18, 20, 28]);
   cv.text(sans, 8, x + 144, y + 42, "1:34.041", GOLD);
 }
 function midCricket(cv: Canvas, x: number, y: number, w: number, h: number): void {
@@ -941,9 +946,9 @@ const STATS: [string, string][] = [
   ["13", "day of COP31"],
   ["3", "missiles downed over Riyadh"],
   ["6.7", "magnitude of the Peru quake"],
-  ["146", "people safe after the Davao landing"],
-  ["$58,983", "bitcoin early Saturday, down 3.9% in a day"],
-  ["124*", "K L Rahul's score at tea in Wellington"],
+  ["146", "safe in Davao"],
+  ["$58,983", "bitcoin, down 3.9%"],
+  ["124*", "Rahul at tea, Wellington"],
 ];
 const REGIONS: [string, RGB, number][] = [
   ["EUROPE 4", BLUE, 130], ["ASIA 10", RED, 200], ["MIDDLE EAST 5", ORANGE, 140],
@@ -1040,10 +1045,13 @@ function build(): Canvas {
     cv.text(sansB, 12, hx + 8, hy + hScene + 14, hh.banner, WHITE);
     cv.text(sansB, 10, hx, hy + hScene + 34, hh.n + "  " + hh.kicker, RED);
     const hl = cv.wrap(sansB, 20, hh.head, heroW);
-    for (let l = 0; l < Math.min(2, hl.length); l++) {
+    const headLines = Math.min(2, hl.length);
+    for (let l = 0; l < headLines; l++) {
       cv.text(sansB, 20, hx, hy + hScene + 58 + l * 23, hl[l], INK);
     }
-    cv.para(sans, 10, hx, hy + hScene + 84, hh.deck, heroW, 12.5, INK, 3);
+    // deck starts after the wrapped headline + a fixed gap (never touching)
+    const deckY = hy + hScene + 84 + (headLines - 1) * 4;
+    cv.para(sans, 10, hx, deckY, hh.deck, heroW, 12.5, INK, 3);
   }
   const heroEnd = hy + hScene + 122; // banner 20 + kicker 14 + headline 46 + 3 deck lines
 
@@ -1060,10 +1068,13 @@ function build(): Canvas {
       cv.text(sansB, 10, mx + 5, my + 44 + 11, m.banner, WHITE);
       cv.text(sansB, 9, mx, my + 71, m.n + "  " + m.kicker, RED);
       const hl = cv.wrap(sansB, 12.5, m.head, midW);
-      for (let l = 0; l < Math.min(2, hl.length); l++) {
+      const headLines = Math.min(2, hl.length);
+      for (let l = 0; l < headLines; l++) {
         cv.text(sansB, 12.5, mx, my + 86 + l * 14.5, hl[l], INK);
       }
-      cv.para(sans, 9.5, mx, my + 100, m.deck, midW, 12, INK, 2);
+      // deck starts after the wrapped headline + a fixed gap (never touching)
+      const deckY = my + 100 + (headLines - 1) * 8;
+      cv.para(sans, 9.5, mx, deckY, m.deck, midW, 12, INK, 2);
     }
   }
   const midEnd = heroEnd + 10 + 2 * midH + 6;
