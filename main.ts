@@ -827,7 +827,9 @@ function midFlags(cv: Canvas, x: number, y: number, w: number, h: number): void 
   cv.rect(x + 110, y + 8, 62, 22, WHITE);
   cv.strokeRect(x + 110, y + 8, 62, 22, GREY, 1);
   cv.circle(x + 141, y + 19, 9, RED);
-  cv.text(sansB, 10, x + 14, y + 42, "BEIJING  ·  TOKYO", INK);
+  // two labels, each centered under its own flag (was one left-aligned string: TOKYO landed in the gap between the flags)
+  cv.text(sansB, 10, x + 45, y + 42, "BEIJING", INK, "c");
+  cv.text(sansB, 10, x + 141, y + 42, "TOKYO", INK, "c");
 }
 function midPlane(cv: Canvas, x: number, y: number, w: number, h: number): void {
   cv.rect(x, y, w, h, [168, 206, 232]);
